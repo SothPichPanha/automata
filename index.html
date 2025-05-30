@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finite Automaton Tool</title>
+   <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Finite Automaton Tool</h1>
+            <p>Complete toolkit for FA operations with step-by-step algorithms</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('basic')">Basic FA</button>
+            <button class="nav-tab" onclick="showTab('deterministic')">NFA or DFA</button>
+            <button class="nav-tab" onclick="showTab('string-test')">String Testing</button>
+            <button class="nav-tab" onclick="showTab('nfa-to-dfa')">NFA → DFA</button>
+            <button class="nav-tab" onclick="showTab('minimize')">Minimize DFA</button>
+        </div>
+
+        <div class="content">
+            <!-- Basic FA Tab -->
+            <div id="basic" class="tab-content active">
+                <div class="input-section">
+                    <h3>Define Finite Automaton</h3>
+                    <div class="grid-layout">
+                        <div>
+                            <div class="input-group">
+                                <label>States (comma-separated):</label>
+                                <input type="text" id="basic-states" placeholder="q0,q1,q2" value="q0,q1,q2">
+                            </div>
+                            <div class="input-group">
+                                <label>Alphabet (comma-separated):</label>
+                                <input type="text" id="basic-alphabet" placeholder="0,1" value="0,1">
+                            </div>
+                            <div class="input-group">
+                                <label>Initial State:</label>
+                                <input type="text" id="basic-initial" placeholder="q0" value="q0">
+                            </div>
+                            <div class="input-group">
+                                <label>Final States (comma-separated):</label>
+                                <input type="text" id="basic-final" placeholder="q2" value="q2">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="input-group">
+                                <label>Transitions (format: from,symbol,to per line):</label>
+                                <textarea id="basic-transitions" rows="8" placeholder="q0,0,q1&#10;q0,1,q0&#10;q1,0,q2&#10;q1,1,q0&#10;q2,0,q2&#10;q2,1,q2">q0,0,q1
+q0,1,q0
+q1,0,q2
+q1,1,q0
+q2,0,q2
+q2,1,q2</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn" onclick="createBasicFA()">Create FA</button>
+                </div>
+
+                <div id="basic-result" class="result-section" style="display:none;">
+                    <h3>Finite Automaton Details</h3>
+                    <div id="basic-output"></div>
+                </div>
+            </div>
+
+            <!-- Deterministic Test Tab -->
+            <div id="deterministic" class="tab-content">
+                <div class="input-section">
+                    <h3>Test if FA is Deterministic or Non-deterministic</h3>
+                    <p style="margin-bottom: 15px;">Use the same format as Basic FA tab to define your automaton.</p>
+                    <div class="grid-layout">
+                        <div>
+                            <div class="input-group">
+                                <label>States:</label>
+                                <input type="text" id="det-states" placeholder="q0,q1,q2" value="q0,q1,q2">
+                            </div>
+                            <div class="input-group">
+                                <label>Alphabet:</label>
+                                <input type="text" id="det-alphabet" placeholder="0,1" value="0,1">
+                            </div>
+                            <div class="input-group">
+                                <label>Initial State:</label>
+                                <input type="text" id="det-initial" placeholder="q0" value="q0">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="input-group">
+                                <label>Transitions:</label>
+                                <textarea id="det-transitions" rows="6" placeholder="q0,0,q1&#10;q0,1,q0,q1">q0,0,q1
+q0,1,q0
+q1,0,q2
+q1,1,q0
+q2,0,q2
+q2,1,q2</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn" onclick="testDeterministic()">Test Determinism</button>
+                </div>
+
+                <div id="det-result" class="result-section" style="display:none;">
+                    <div id="det-output"></div>
+                </div>
+            </div>
+
+            <!-- String Testing Tab -->
+            <div id="string-test" class="tab-content">
+                <div class="input-section">
+                    <h3>Test String Acceptance</h3>
+                    <div class="grid-layout">
+                        <div>
+                            <div class="input-group">
+                                <label>States:</label>
+                                <input type="text" id="str-states" placeholder="q0,q1,q2" value="q0,q1,q2">
+                            </div>
+                            <div class="input-group">
+                                <label>Alphabet:</label>
+                                <input type="text" id="str-alphabet" placeholder="0,1" value="0,1">
+                            </div>
+                            <div class="input-group">
+                                <label>Initial State:</label>
+                                <input type="text" id="str-initial" placeholder="q0" value="q0">
+                            </div>
+                            <div class="input-group">
+                                <label>Final States:</label>
+                                <input type="text" id="str-final" placeholder="q2" value="q2">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="input-group">
+                                <label>Transitions:</label>
+                                <textarea id="str-transitions" rows="6">q0,0,q1
+q0,1,q0
+q1,0,q2
+q1,1,q0
+q2,0,q2
+q2,1,q2</textarea>
+                            </div>
+                            <div class="input-group">
+                                <label>Test String:</label>
+                                <input type="text" id="test-string" placeholder="001" value="001">
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn" onclick="testString()">Test String</button>
+                </div>
+
+                <div id="str-result" class="result-section" style="display:none;">
+                    <div id="str-output"></div>
+                </div>
+            </div>
+
+            <!-- NFA to DFA Tab -->
+            <div id="nfa-to-dfa" class="tab-content">
+                <div class="input-section">
+                    <h3>Convert NFA to DFA</h3>
+                    <div class="grid-layout">
+                        <div>
+                            <div class="input-group">
+                                <label>NFA States:</label>
+                                <input type="text" id="nfa-states" placeholder="q0,q1,q2" value="q0,q1,q2">
+                            </div>
+                            <div class="input-group">
+                                <label>Alphabet:</label>
+                                <input type="text" id="nfa-alphabet" placeholder="0,1" value="0,1">
+                            </div>
+                            <div class="input-group">
+                                <label>Initial State:</label>
+                                <input type="text" id="nfa-initial" placeholder="q0" value="q0">
+                            </div>
+                            <div class="input-group">
+                                <label>Final States:</label>
+                                <input type="text" id="nfa-final" placeholder="q2" value="q2">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="input-group">
+                                <label>NFA Transitions (multiple destinations allowed):</label>
+                                <textarea id="nfa-transitions" rows="8" placeholder="q0,0,q0,q1&#10;q0,1,q0&#10;q1,1,q2">q0,0,q0,q1
+q0,1,q0
+q1,1,q2
+q2,0,q2
+q2,1,q2</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn" onclick="convertNFAtoDFA()">Convert to DFA</button>
+                </div>
+
+                <div id="nfa-dfa-result" class="result-section" style="display:none;">
+                    <div id="nfa-dfa-output"></div>
+                </div>
+            </div>
+
+            <!-- Minimize DFA Tab -->
+            <div id="minimize" class="tab-content">
+                <div class="input-section">
+                    <h3>Minimize DFA</h3>
+                    <div class="grid-layout">
+                        <div>
+                            <div class="input-group">
+                                <label>DFA States:</label>
+                                <input type="text" id="min-states" placeholder="q0,q1,q2,q3" value="q0,q1,q2,q3,q4">
+                            </div>
+                            <div class="input-group">
+                                <label>Alphabet:</label>
+                                <input type="text" id="min-alphabet" placeholder="0,1" value="0,1">
+                            </div>
+                            <div class="input-group">
+                                <label>Initial State:</label>
+                                <input type="text" id="min-initial" placeholder="q0" value="q0">
+                            </div>
+                            <div class="input-group">
+                                <label>Final States:</label>
+                                <input type="text" id="min-final" placeholder="q2,q3" value="q2,q4">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="input-group">
+                                <label>DFA Transitions:</label>
+                                <textarea id="min-transitions" rows="8">q0,0,q1
+q0,1,q2
+q1,0,q0
+q1,1,q3
+q2,0,q4
+q2,1,q0
+q3,0,q4
+q3,1,q0
+q4,0,q4
+q4,1,q4</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn" onclick="minimizeDFA()">Minimize DFA</button>
+                </div>
+
+                <div id="min-result" class="result-section" style="display:none;">
+                    <div id="min-output"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>
