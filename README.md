@@ -1,1 +1,1 @@
-Code by ai all
+https://sothpichpanha.github.io/automata/
